@@ -1,0 +1,50 @@
+// App.js  
+import React, { useState, useEffect } from 'react';  
+
+const App = () => {  
+    const [count, setCount] = useState(0);  
+    const [isCounting, setIsCounting] = useState(false);  
+    
+    // Effect for logging count changes  
+    useEffect(() => {  
+        console.log(`Count updated: ${count}`);  
+    }, [count]); // Dependency array ensures the effect runs only when `count` changes  
+
+    const increment = () => {  
+        setCount(prevCount => prevCount + 1);  
+    };  
+
+    const toggleCounting = () => {  
+        setIsCounting(prev => !prev);  
+    };  
+
+    return (  
+        <div style={{ textAlign: 'center', padding: '20px' }}>  
+            <h1>Reactive Counter App</h1>  
+            <h2>Count: {count}</h2>  
+            <button onClick={increment}>Increment</button>  
+            <button onClick={toggleCounting}>  
+                {isCounting ? 'Stop Counting' : 'Start Counting'}  
+            </button>  
+            {isCounting && (  
+                <div style={{ marginTop: '20px' }}>  
+                    <h3>Counting every second...</h3>  
+                </div>  
+            )}  
+            {isCounting && (  
+                <div>  
+                    <h4>Automatically Incrementing:</h4>  
+                    <button onClick={() => {  
+                        const interval = setInterval(() => {  
+                            setCount(prevCount => prevCount + 1);  
+                        }, 1000);  
+                        // Clear interval when the component unmounts or counting is stopped  
+                        return () => clearInterval(interval);  
+                    }}>Start Auto-Increment</button>  
+                </div>  
+            )}  
+        </div>  
+    );  
+};  
+
+export default App;
